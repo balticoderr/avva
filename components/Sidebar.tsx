@@ -16,6 +16,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ children, addresses }) => {
   const pathname = usePathname();
+
   const routes = useMemo(
     () => [
       {
@@ -35,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children, addresses }) => {
   );
 
   return (
-    <div className="flex h-full">
+    <div className="flex  h-[calc(100%)]">
       <div
         className="
           hidden 
@@ -55,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children, addresses }) => {
             ))}
           </div>
         </Box>
-        <Box className="overflow-y-auuto h-full">
+        <Box className="overflow-y-auto h-full">
           <LatestAddresses addresses={addresses} />
         </Box>
       </div>

@@ -56,11 +56,7 @@ const LatestAddresses: React.FC<LatestAddressesProps> = ({ addresses }) => {
           flex-col
           gap-y-2
           mt-4
-          px-5
-          h-full
-          w-full
-          overflow-hidden
-          overflow-y-scroll
+          px-3
       "
       >
         {addresses.map((item) => (

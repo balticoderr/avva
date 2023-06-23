@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
-import { FaUserAlt } from "react-icons/fa";
+import { FaSortAmountUpAlt, FaUserAlt } from "react-icons/fa";
 
 import { HiHome, HiSearch } from "react-icons/hi";
 import Button from "./Button";
@@ -120,6 +120,20 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
             "
           >
             <HiSearch className="text-black" size={20} />
+          </button>
+          <button
+            onClick={() => router.push("/latest")}
+            className="
+              rounded-full
+              p-2
+              bg-white
+              items-center
+              justify-center
+              hover:opacity-75
+              transition
+            "
+          >
+            <FaSortAmountUpAlt className="text-black" size={20} />
           </button>
         </div>
         <div
