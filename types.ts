@@ -1,5 +1,11 @@
 import Stripe from "stripe";
 
+export interface DeleteModalProps {
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+}
+
 export interface Address {
   id: string;
   title: string;
