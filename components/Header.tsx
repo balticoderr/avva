@@ -179,6 +179,11 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                 items-center
               "
             >
+              <Button onClick={() => {}} className="bg-white hidden md:block">
+                <div className="flex bg-white">
+                  <FaUserAlt /> <p className="text-xs pl-1">{user.email}</p>
+                </div>
+              </Button>
               <Button
                 onClick={handleLogout}
                 className="
