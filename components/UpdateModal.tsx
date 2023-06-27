@@ -91,7 +91,6 @@ const UpdateModal = () => {
         <Input
           id="title"
           disabled={isLoading}
-          value={"test"}
           {...register("title", { required: true })}
           placeholder="Adresas"
         />
