@@ -11,6 +11,8 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUser } from "@/hooks/useUser";
 import { toast } from "react-hot-toast";
 import { data } from "autoprefixer";
+import { AiOutlineLogout, AiOutlinePlus } from "react-icons/ai";
+import useUploadModal from "@/hooks/useUploadModal";
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -23,6 +25,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 
   const supabaseClient = useSupabaseClient();
   const { user } = useUser();
+  const uploadModal = useUploadModal();
 
   const handleLogout = async () => {
     const { error } = await supabaseClient.auth.signOut();
@@ -34,6 +37,14 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
     } else {
       toast.success("Logged out!");
     }
+  };
+
+  const onClick = () => {
+    if (!user) {
+      return authModal.onOpen();
+    }
+
+    return uploadModal.onOpen();
   };
 
   return (
@@ -135,6 +146,22 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
           >
             <FaSortAmountUpAlt className="text-black" size={20} />
           </button>
+          <button
+            onClick={onClick}
+            className="
+              rounded-full
+              p-2
+              bg-white
+              items-center
+              justify-center
+              hover:opacity-75
+              transition
+              block
+              md:hidden
+            "
+          >
+            <AiOutlinePlus className="text-black" size={20} />
+          </button>
         </div>
         <div
           className="
@@ -152,41 +179,24 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                 items-center
               "
             >
-              <Button onClick={() => {}} className="bg-white">
-                <div className="flex bg-white">
-                  <FaUserAlt /> <p className="text-xs pl-1">{user.email}</p>
-                </div>
-              </Button>
               <Button
                 onClick={handleLogout}
                 className="
                   bg-white
-                  px-6
+                  px-4
                   py-2
+                  ml-2
                 "
               >
-                Atsijungti
+                Logout
               </Button>
             </div>
           ) : (
-            <>
-              <div>
-                <Button
-                  onClick={authModal.onOpen}
-                  className="bg-transparent text-neutral-300 font-medium"
-                >
-                  Prisiregistruoti
-                </Button>
-              </div>
-              <div>
-                <Button
-                  onClick={authModal.onOpen}
-                  className="bg-white px-6 py-2"
-                >
-                  Prisijungti
-                </Button>
-              </div>
-            </>
+            <div>
+              <Button onClick={authModal.onOpen} className="bg-white px-6 py-2">
+                Login
+              </Button>
+            </div>
           )}
         </div>
       </div>
