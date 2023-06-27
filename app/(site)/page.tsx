@@ -1,7 +1,5 @@
 import getAddresses from "@/actions/getAddresses";
 import Header from "@/components/Header";
-import { useUser } from "@/hooks/useUser";
-import Image from "next/image";
 import PageContent from "./components/PageContent";
 
 // for up to date data

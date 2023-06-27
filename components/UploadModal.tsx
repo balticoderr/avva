@@ -9,7 +9,6 @@ import Button from "./Button";
 import Input from "./Input";
 import Modal from "./Modal";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { userAgent } from "next/server";
 import { useRouter } from "next/navigation";
 
 const UploadModal = () => {
@@ -38,71 +37,32 @@ const UploadModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
     try {
       setIsLoading(true);
-      const uniqueID = uniqid();
-      const imageFile = values.image?.[0];
 
       if (!user) {
         toast.error("Ne visi laukeliai užpildyti");
         return;
       }
 
-      if (!imageFile) {
-        const { error: supabaseError } = await supabaseClient
-          .from("addresses")
-          .insert({
-            user_id: user.id,
-            title: values.title,
-            codes: values.codes,
-            details: values.details,
-            image_path: null,
-          });
+      const { error: supabaseError } = await supabaseClient
+        .from("addresses")
+        .insert({
+          user_id: user.id,
+          title: values.title,
+          codes: values.codes,
+          details: values.details,
+        });
 
-        if (supabaseError) {
-          setIsLoading(false);
-          return toast.error(supabaseError.message);
-        }
-        router.refresh();
-
+      if (supabaseError) {
         setIsLoading(false);
-        toast.success("Adresas sukurtas!");
-        reset();
-        uploadModal.onClose();
-      } else {
-        const { data: imageData, error: imageError } =
-          await supabaseClient.storage
-            .from("images")
-            .upload(`image-${uniqueID}`, imageFile, {
-              cacheControl: "3600",
-              upsert: false,
-            });
-
-        if (imageError) {
-          setIsLoading(false);
-          return toast.error("Nepavyko įkelti nuotraukos.");
-        }
-
-        const { error: supabaseError } = await supabaseClient
-          .from("addresses")
-          .insert({
-            user_id: user.id,
-            title: values.title,
-            codes: values.codes,
-            details: values.details,
-            image_path: `${imageFile ? imageData.path : null}`,
-          });
-
-        if (supabaseError) {
-          setIsLoading(false);
-          return toast.error(supabaseError.message);
-        }
-
-        router.refresh();
-
-        setIsLoading(false);
-        toast.success("Adresas sukurtas!");
-        reset();
-        uploadModal.onClose();
+        return toast.error(supabaseError.message);
       }
+
+      router.refresh();
+
+      setIsLoading(false);
+      toast.success("Adresas sukurtas!");
+      reset();
+      uploadModal.onClose();
     } catch (error) {
       toast.error("Kažkas nutiko.");
     } finally {
@@ -127,13 +87,13 @@ const UploadModal = () => {
         <Input
           id="title"
           disabled={isLoading}
-          {...register("title", { required: true })}
+          {...register("title", { required: false })}
           placeholder="Adresas"
         />
         <Input
           id="codes"
           disabled={isLoading}
-          {...register("codes", { required: true })}
+          {...register("codes", { required: false })}
           placeholder="Laiptinių kodai"
         />
         <Input
