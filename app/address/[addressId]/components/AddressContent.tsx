@@ -87,11 +87,12 @@ const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
           </p>
         </div>
       </div>
-      <div className="flex items-center justify-center md:justify-start gap-4 mt-8">
-        <button
-          onClick={onClick}
-          className={twMerge(
-            `
+      {user && (
+        <div className="flex items-center justify-center md:justify-start gap-4 mt-8">
+          <button
+            onClick={onClick}
+            className={twMerge(
+              `
             rounded-full  
             bg-red-800
             w-44
@@ -110,15 +111,15 @@ const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
             flex-inline
             items-center
             justify-center `
-          )}
-        >
-          <AiFillDelete size={20} className="" />
-          <p className="ml-1">Ištrinti</p>
-        </button>
-        <button
-          onClick={onClickUpdate}
-          className={twMerge(
-            `
+            )}
+          >
+            <AiFillDelete size={20} className="" />
+            <p className="ml-1">Ištrinti</p>
+          </button>
+          <button
+            onClick={onClickUpdate}
+            className={twMerge(
+              `
             rounded-full  
             bg-green-500
             w-44
@@ -137,18 +138,19 @@ const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
             flex-inline
             items-center
             justify-center `
-          )}
-        >
-          <AiFillEdit
-            size={20}
-            className="
+            )}
+          >
+            <AiFillEdit
+              size={20}
+              className="
           flex
           ml-1
           "
-          />
-          <p className="ml-1">Redaguoti</p>
-        </button>
-      </div>
+            />
+            <p className="ml-1">Redaguoti</p>
+          </button>
+        </div>
+      )}
     </div>
   );
 };
