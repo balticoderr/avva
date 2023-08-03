@@ -5,20 +5,24 @@ import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import Button from "./Button";
 import Input from "./Input";
-import Modal from "./Modal";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
-import useUpdateModal from "@/hooks/useUpdateModal";
+import { Address } from "@/types";
 
-const UpdateModal = () => {
+interface UpdateAddressFormProps {
+  currentData: Address;
+}
+
+const UpdateAddressForm: React.FC<UpdateAddressFormProps> = ({
+  currentData,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [oldData, setOldData] = useState({
-    title: "",
-    codes: "",
-    details: "",
+    title: currentData.title,
+    codes: currentData.codes,
+    details: currentData.details,
   });
 
-  const updateModal = useUpdateModal();
   const { user } = useUser();
   const supabaseClient = useSupabaseClient();
   const router = useRouter();
@@ -29,6 +33,7 @@ const UpdateModal = () => {
   const currentAddressId = currentURL.substring(
     currentURL.lastIndexOf("/") + 1
   );
+
   const { register, handleSubmit, reset } = useForm<FieldValues>({
     defaultValues: {
       title: "",
@@ -38,21 +43,12 @@ const UpdateModal = () => {
     values,
   });
 
-  // Create async useCallback function to run getAddressById. Save it by useting setOldData()
-
-  const onChange = (open: boolean) => {
-    if (!open) {
-      reset();
-      updateModal.onClose();
-    }
-  };
-
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
     try {
       setIsLoading(true);
 
       if (!user) {
-        toast.error("Ne visi laukeliai užpildyti");
+        toast.error("Neprisijungę vartotojai negali atnaujinti duomenų");
         return;
       }
 
@@ -64,21 +60,17 @@ const UpdateModal = () => {
           codes: values.codes,
           details: values.details,
         })
-        .eq("id", currentAddressId);
-
-      console.log("update address:", selectedData, "error:", supabaseError);
+        .eq("id", currentData.id);
 
       if (supabaseError) {
         setIsLoading(false);
         return toast.error(supabaseError.message);
       }
 
-      router.refresh();
-
+      router.push(`/address/${currentData.id}`);
       setIsLoading(false);
       toast.success("Adresas atnaujintas!");
       reset();
-      updateModal.onClose();
     } catch (error) {
       toast.error("Kažkas nutiko.");
     } finally {
@@ -86,45 +78,54 @@ const UpdateModal = () => {
     }
   };
   return (
-    <Modal
-      title="Redaguoti adresą"
-      description="Norint atnaujinti duomenis, užpildyk lentelę."
-      isOpen={updateModal.isOpen}
-      onChange={onChange}
-    >
-      <form
-        className="
+    <form
+      className="
           flex
           flex-col
           gap-y-4
       "
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <Input
+        id="title"
+        disabled={isLoading}
+        {...register("title", { required: true })}
+        placeholder="Adresas"
+      />
+      <Input
+        id="codes"
+        disabled={isLoading}
+        {...register("codes", { required: true })}
+        placeholder="Laiptinių kodai"
+      />
+      <Input
+        id="details"
+        disabled={isLoading}
+        {...register("details", { required: false })}
+        placeholder="Papildoma informacija"
+      />
+
+      <div
+        className="
+          flex
+          flex-row
+          gap-x-4
+      "
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Input
-          id="title"
+        <Button
+          className="bg-red-800"
           disabled={isLoading}
-          {...register("title", { required: true })}
-          placeholder="Adresas"
-        />
-        <Input
-          id="codes"
-          disabled={isLoading}
-          {...register("codes", { required: true })}
-          placeholder="Laiptinių kodai"
-        />
-        <Input
-          id="details"
-          disabled={isLoading}
-          {...register("details", { required: false })}
-          placeholder="Papildoma informacija"
-        />
-
+          onClick={() => router.push(`/address/${currentData.id}`)}
+        >
+          Grįžti atgal
+        </Button>
         <Button disabled={isLoading} type="submit">
           Išsaugoti
         </Button>
-      </form>
-    </Modal>
+      </div>
+    </form>
   );
 };
 
-export default UpdateModal;
+export default UpdateAddressForm;

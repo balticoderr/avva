@@ -49,24 +49,24 @@ export interface Database {
       users: {
         Row: {
           avatar_url: string | null;
-          billing_address: Json | null;
+          isActivated: boolean | null;
           full_name: string | null;
           id: string;
-          payment_method: Json | null;
+          isAdmin: boolean | null;
         };
         Insert: {
           avatar_url?: string | null;
-          billing_address?: Json | null;
+          isActivated?: boolean | null;
           full_name?: string | null;
           id: string;
-          payment_method?: Json | null;
+          isAdmin?: Json | null;
         };
         Update: {
           avatar_url?: string | null;
-          billing_address?: Json | null;
+          isActivated?: boolean | null;
           full_name?: string | null;
           id?: string;
-          payment_method?: Json | null;
+          isAdmin?: Json | null;
         };
         Relationships: [
           {

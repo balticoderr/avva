@@ -8,7 +8,6 @@ import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import useUpdateModal from "@/hooks/useUpdateModal";
 import { twMerge } from "tailwind-merge";
 import { useRouter, redirect } from "next/navigation";
-import toast from "react-hot-toast";
 
 interface AddressContentProps {
   data: Address;
@@ -19,6 +18,11 @@ const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
   const deleteModal = useDeleteModal();
   const updateModal = useUpdateModal();
   const { user } = useUser();
+  const router = useRouter();
+  // const currentURL = window.location.href;
+  // const currentAddressId = currentURL.substring(
+  //   currentURL.lastIndexOf("/") + 1
+  // );
 
   if (!data.codes) {
     redirect("/");
@@ -117,7 +121,7 @@ const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
             <p className="ml-1">Ištrinti</p>
           </button>
           <button
-            onClick={onClickUpdate}
+            onClick={() => router.push(`/address/${data.id}/update`)}
             className={twMerge(
               `
             rounded-full  
