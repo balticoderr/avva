@@ -5,7 +5,6 @@ import { Address } from "@/types";
 import { useUser } from "@/hooks/useUser";
 import React from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
-import useUpdateModal from "@/hooks/useUpdateModal";
 import { twMerge } from "tailwind-merge";
 import { useRouter, redirect } from "next/navigation";
 
@@ -16,7 +15,6 @@ interface AddressContentProps {
 const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
   const authModal = useAuthModal();
   const deleteModal = useDeleteModal();
-  const updateModal = useUpdateModal();
   const { user } = useUser();
   const router = useRouter();
   // const currentURL = window.location.href;
@@ -35,15 +33,6 @@ const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
     }
     if (data) {
       return deleteModal.onOpen();
-    }
-  };
-
-  const onClickUpdate = () => {
-    if (!user) {
-      return authModal.onOpen();
-    }
-    if (data) {
-      return updateModal.onOpen();
     }
   };
 

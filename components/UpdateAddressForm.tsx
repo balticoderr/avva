@@ -8,6 +8,9 @@ import Input from "./Input";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
 import { Address } from "@/types";
+import useExplainModal from "@/hooks/useExplainModal";
+import useAuthModal from "@/hooks/useAuthModal";
+import { BsQuestionCircleFill } from "react-icons/bs";
 
 interface UpdateAddressFormProps {
   currentData: Address;
@@ -24,15 +27,12 @@ const UpdateAddressForm: React.FC<UpdateAddressFormProps> = ({
   });
 
   const { user } = useUser();
+  const authModal = useAuthModal();
+  const explainModal = useExplainModal();
   const supabaseClient = useSupabaseClient();
   const router = useRouter();
 
   const values = oldData;
-
-  const currentURL = window.location.href;
-  const currentAddressId = currentURL.substring(
-    currentURL.lastIndexOf("/") + 1
-  );
 
   const { register, handleSubmit, reset } = useForm<FieldValues>({
     defaultValues: {
@@ -42,6 +42,14 @@ const UpdateAddressForm: React.FC<UpdateAddressFormProps> = ({
     },
     values,
   });
+
+  const onClick = () => {
+    if (!user) {
+      return authModal.onOpen();
+    }
+
+    return explainModal.onOpen();
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
     try {
@@ -92,12 +100,20 @@ const UpdateAddressForm: React.FC<UpdateAddressFormProps> = ({
         {...register("title", { required: true })}
         placeholder="Adresas"
       />
-      <Input
-        id="codes"
-        disabled={isLoading}
-        {...register("codes", { required: true })}
-        placeholder="Laiptinių kodai"
-      />
+      <div className="flex">
+        <Input
+          id="codes"
+          disabled={isLoading}
+          {...register("codes", { required: true })}
+          placeholder="Laiptinių kodai"
+        />
+        <BsQuestionCircleFill
+          onClick={onClick}
+          size={20}
+          className="m-3 opacity-70 hover:opacity-100 cursor-pointer"
+        />
+      </div>
+
       <Input
         id="details"
         disabled={isLoading}
@@ -114,13 +130,13 @@ const UpdateAddressForm: React.FC<UpdateAddressFormProps> = ({
         onSubmit={handleSubmit(onSubmit)}
       >
         <Button
-          className="bg-red-800"
+          className="bg-red-800 text-white"
           disabled={isLoading}
           onClick={() => router.push(`/address/${currentData.id}`)}
         >
           Grįžti atgal
         </Button>
-        <Button disabled={isLoading} type="submit">
+        <Button className=" text-white" disabled={isLoading} type="submit">
           Išsaugoti
         </Button>
       </div>

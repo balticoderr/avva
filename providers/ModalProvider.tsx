@@ -2,7 +2,7 @@
 
 import AuthModal from "@/components/AuthModal";
 import DeleteModal from "@/components/DeleteModal";
-import UpdateModal from "@/components/UpdateModal";
+import ExplainModal from "@/components/ExplainModal";
 import UploadModal from "@/components/UploadModal";
 import { useEffect, useState } from "react";
 
@@ -22,7 +22,7 @@ const ModalProvider = () => {
       <AuthModal />
       <UploadModal />
       <DeleteModal />
-      <UpdateModal />
+      <ExplainModal />
     </>
   );
 };
