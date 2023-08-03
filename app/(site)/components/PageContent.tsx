@@ -1,6 +1,7 @@
 "use client";
 
 import AddressItem from "@/components/AddressItem";
+import { useUser } from "@/hooks/useUser";
 import { Address } from "@/types";
 import React from "react";
 
@@ -9,8 +10,18 @@ interface PageContentProps {
 }
 
 const PageContent: React.FC<PageContentProps> = ({ addresses }) => {
+  const { user } = useUser();
+
+  if (!user) {
+    return (
+      <div className="mt-4 text-neutral-400">
+        Prisijunkite norėdami matyti adresus.
+      </div>
+    );
+  }
+
   if (addresses.length === 0) {
-    return <div className="mt-4 text-neutral-400">Nėra jokių adresų.</div>;
+    return <div className="mt-4 text-neutral-400">Adresų nėra.</div>;
   }
   return (
     <div
