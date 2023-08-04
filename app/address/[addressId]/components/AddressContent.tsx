@@ -60,8 +60,8 @@ const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
           {data.title}
         </div>
 
-        <div className="block w-full md:max-w-sm p-6  border rounded-lg shadow  dark:bg-gray-800 dark:border-gray-900">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight dark:text-white">
+        <div className="block w-full md:max-w-sm p-6  border rounded-lg shadow  bg-gray-800 border-gray-900">
+          <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
             Laiptinių kodai
           </h5>
           {codesArray.map((item, index) => (
@@ -69,13 +69,13 @@ const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
               <span className="bg-white text-black rounded p-2 m-1">
                 {index + 1}
               </span>
-              <p className="font-normal dark:text-gray-400 ">{item}</p>
+              <p className="font-normal text-gray-400 ">{item}</p>
             </div>
           ))}
-          <h5 className="mb-2 text-2xl font-bold tracking-tight dark:text-white">
+          <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
             Papildoma informacija
           </h5>
-          <p className="font-normal text-gray-700 dark:text-gray-400">
+          <p className="font-normal text-gray-400">
             {data.details ? data.details : "Informacijos nėra..."}
           </p>
         </div>
