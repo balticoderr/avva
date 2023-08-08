@@ -55,7 +55,7 @@ const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
             underline-offset-8
             decoration-2
             decoration-white
-            pr-16
+            pr-8
             "
           >
             {data.title}
@@ -64,7 +64,7 @@ const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
             className="       
             rounded-full  
             bg-green-500
-            text-sm
+            text-xs
             w-44
             border
             border-transparent
