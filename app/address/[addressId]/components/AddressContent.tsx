@@ -5,8 +5,10 @@ import { Address } from "@/types";
 import { useUser } from "@/hooks/useUser";
 import React from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import { twMerge } from "tailwind-merge";
 import { useRouter, redirect } from "next/navigation";
+import Link from "next/link";
 
 interface AddressContentProps {
   data: Address;
@@ -17,10 +19,6 @@ const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
   const deleteModal = useDeleteModal();
   const { user } = useUser();
   const router = useRouter();
-  // const currentURL = window.location.href;
-  // const currentAddressId = currentURL.substring(
-  //   currentURL.lastIndexOf("/") + 1
-  // );
 
   if (!data.codes) {
     redirect("/");
@@ -46,18 +44,50 @@ const AddressContent: React.FC<AddressContentProps> = ({ data }) => {
     >
       <div>
         <div
-          className="
-            text-2xl 
+          className="flex             
+            flex-inline mb-8"
+        >
+          <div
+            className="text-2xl 
             semibold 
             text-white 
             underline
             underline-offset-8
             decoration-2
             decoration-white
-            mb-6
-          "
-        >
-          {data.title}
+            pr-16
+            "
+          >
+            {data.title}
+          </div>
+          <Link
+            className="       
+            rounded-full  
+            bg-green-500
+            text-sm
+            w-44
+            border
+            border-transparent
+            px-2
+            py-2
+            font-bold
+            disabled:cursor-not-allowed
+            disabled:opacity-50
+            opacity-75
+            text-white
+            hover:opacity-100
+            transition 
+            flex
+            flex-inline
+            items-center
+            justify-center
+            "
+            href={`https://maps.lt/map/search/${data.title}, Jonava`}
+            target="_blank"
+          >
+            <FaMapMarkerAlt className="pr-1" />
+            Rodyti žemėlapyje
+          </Link>
         </div>
 
         <div className="block w-full md:max-w-sm p-6  border rounded-lg shadow  bg-gray-800 border-gray-900">
